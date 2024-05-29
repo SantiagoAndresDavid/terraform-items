@@ -1,21 +1,28 @@
-data "archive_file" "lambda_zip" {
+data "archive_file" "save_items" {
   type        = "zip"
-  source_file = var.source_file
-  output_path = "${path.module}/${var.zip_name}.zip"
+  source_file = "/home/santiago/Documents/workspace/terraform-exercise/backend/save_items.py"
+  output_path = "${path.module}/save_items.zip"
 }
 
-resource "aws_lambda_function" "lambda" {
-  filename      = data.archive_file.lambda_zip.output_path
-  function_name = var.function_name
-  role          = var.role
-  handler       = var.handler
-  runtime       = var.runtime
+resource "aws_lambda_function" "save_items_lambda" {
+  filename         = data.archive_file.save_items.output_path
+  function_name    = "save-items-lambda"
+  role             = "arn:aws:iam::381491975644:role/service-role/test-lambda-role"
+  handler          = "save_items.handle"
+  runtime          = "python3.12"
 }
 
-/*resource "aws_lambda_permission" "api_gateway_permission" {
-  statement_id  = "AllowExecutionFromAPIGateway"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.lambda.function_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = var.source_arn
-}*/
+data "archive_file" "get_items" {
+  type        = "zip"
+  source_file = "/home/santiago/Documents/workspace/terraform-exercise/backend/get_items_db.py"
+  output_path = "${path.module}/get_items.zip"
+}
+
+
+resource "aws_lambda_function" "get_items_lambda" {
+  filename         = data.archive_file.get_items.output_path
+  function_name    = "get-items-lambda"
+  role             = "arn:aws:iam::381491975644:role/service-role/test-lambda-role"
+  handler          = "get_items_db.handle"
+  runtime          = "python3.12"
+}
