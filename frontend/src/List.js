@@ -9,7 +9,7 @@ const List = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const url = 'https://1k6ri33dw5.execute-api.us-west-2.amazonaws.com/dev/items';
+            const url = 'https://xrdfoxtcbg.execute-api.us-west-2.amazonaws.com/dev/items';
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
@@ -17,11 +17,8 @@ const List = () => {
                 }
                 const result = await response.json();
                 const data = JSON.parse(result.body); // Parsear el string JSON contenido en `body`
-                const extractedData = data.map(item => ({
-                    title: item.title.S,
-                    body: item.body.S
-                }));
-                setLista(extractedData);
+                // No es necesario mapear `title.S` y `body.S` ya que los campos ya están correctos
+                setLista(data);
             } catch (error) {
                 setError('Error fetching data: ' + error.message);
                 console.error('Error fetching data:', error);

@@ -8,10 +8,10 @@ function Formulario() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-      const response = await fetch('https://1k6ri33dw5.execute-api.us-west-2.amazonaws.com/dev/items  ', {
+      const response = await fetch('https://xrdfoxtcbg.execute-api.us-west-2.amazonaws.com/dev/items', {
         method: 'POST',
         body: JSON.stringify({
-          title: titulo,
+          title: titulo,  
           body: cuerpo,
         }),
       });
