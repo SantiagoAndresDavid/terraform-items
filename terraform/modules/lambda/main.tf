@@ -1,6 +1,6 @@
 data "archive_file" "save_items" {
   type        = "zip"
-  source_file = "/home/santiago/Documents/workspace/terraform-exercise/backend/save_items.py"
+  source_dir = "/home/santiago/Documents/workspace/terraform-items/backend/save_items"
   output_path = "${path.module}/save_items.zip"
 }
 
@@ -14,7 +14,7 @@ resource "aws_lambda_function" "save_items_lambda" {
 
 data "archive_file" "get_items" {
   type        = "zip"
-  source_file = "/home/santiago/Documents/workspace/terraform-exercise/backend/get_items_db.py"
+  source_dir = "/home/santiago/Documents/workspace/terraform-items/backend/get_items"
   output_path = "${path.module}/get_items.zip"
 }
 

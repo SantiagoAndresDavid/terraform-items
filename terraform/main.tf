@@ -18,10 +18,6 @@ module "s3" {
   bucket_name = "items-01"
 }
 
-module "dynamodb" {
-  source     = "./modules/dynamo"
-  table_name = "cloud-exercise-table"
-}
 
 module "lambda" {
   source = "./modules/lambda"
@@ -35,3 +31,21 @@ module "api-gateway" {
   save_items_lambda_name = module.lambda.save_items_lambda_name
   region                 = var.region
 }
+
+/*module "rds" {
+  source                = "./modules/rds"
+  allocated_storage     = 20
+  max_allocated_storage = 20
+  engine                = "mysql"
+  engine_version        = "8.0.35"  # Cambiado a una versión compatible
+  instance_class        = "db.t3.micro"
+  db_name               = "mydatabase"
+  username              = "admin"
+  password              = "your-secure-password"
+  parameter_group_name  = "default.mysql5.7"
+  skip_final_snapshot   = true
+  publicly_accessible   = true
+  tags = {
+    Name = "MyDatabaseInstance"
+  }
+}*/
