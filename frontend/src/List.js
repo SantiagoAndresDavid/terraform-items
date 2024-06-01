@@ -9,7 +9,7 @@ const List = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const url = 'https://xrdfoxtcbg.execute-api.us-west-2.amazonaws.com/dev/items';
+            const url = 'https://2q4n6wtnse.execute-api.us-west-2.amazonaws.com/dev/items';
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
