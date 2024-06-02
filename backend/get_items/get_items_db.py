@@ -28,8 +28,9 @@ def handle(event, context):
         cursor.execute(sql)
         # Obtener todos los resultados
         items = cursor.fetchall()
+        print(items)
         # Convertir los resultados a un formato JSON
-        items_json = [{'id': item[0], 'title': item[1], 'body': item[2]} for item in items]
+        items_json = [{'Id': item[0], 'FileName': item[1], 'FileType': item[2]} for item in items]
         
         return {
             "statusCode": 200,
@@ -42,5 +43,4 @@ def handle(event, context):
             "headers": headers,
             "body": json.dumps({"error": str(e)})
         }
-
 

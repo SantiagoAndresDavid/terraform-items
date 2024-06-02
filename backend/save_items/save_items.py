@@ -25,20 +25,18 @@ headers = {
 
 def handle(event, context):
     # Verifica que el evento contiene los datos necesarios
-    if 'title' not in event or 'body' not in event or 'file' not in event or 'fileName' not in event or 'fileType' not in event:
+    if 'file' not in event or 'fileName' not in event or 'fileType' not in event:
         return {
             "statusCode": 400,
             "headers": headers,
-            "body": json.dumps({"error": "Missing 'title', 'body', 'file', 'fileName', or 'fileType' in the event"})
+            "body": json.dumps({"error": "Missing 'file', 'fileName', or 'fileType' in the event"})
         }
 
     id = str(uuid.uuid4())
-    title = event["title"]
-    body = event["body"]
     file_content_base64 = event["file"]
     file_name = event["fileName"]
     file_extension = file_name.split('.')[-1]
-    target_file = f'data/{title}-{id}.{file_extension}'
+    target_file = f'data/{file_name}-{id}.{file_extension}'
 
     connection = None
 
@@ -54,8 +52,8 @@ def handle(event, context):
         cursor = connection.cursor()
 
         # Insertar el nuevo registro en la base de datos
-        sql = "INSERT INTO {} (id, title, body) VALUES (%s, %s, %s)".format(TABLE_NAME)
-        cursor.execute(sql, (id, title, body))
+        sql = "INSERT INTO {} (Id, FileName, FileType) VALUES (%s, %s, %s)".format(TABLE_NAME)
+        cursor.execute(sql, (id, file_name, file_extension))
 
         # Commit para asegurarse de que los cambios se guarden en la base de datos
         connection.commit()
@@ -64,8 +62,7 @@ def handle(event, context):
             "headers": headers,
             "body": json.dumps({
                 "id": id,
-                "title": title,
-                "body": body,
+                "title": file_name,
             })
         }
     except pymysql.MySQLError as e:
@@ -90,4 +87,3 @@ def handle(event, context):
         # Asegurar que la conexión se cierra
         if connection:
             connection.close()
-
